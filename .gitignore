@@ -1,0 +1,9 @@
+__pycache__
+artifacts
+xldb_back*/
+chromedrive*/
+.pytest_cache/
+test_old/
+src_old/
+.vscode/
+.venv/
