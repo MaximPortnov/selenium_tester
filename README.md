@@ -25,15 +25,22 @@ scripts\replay_cases_report.bat
 
 `run_tests` по умолчанию запускает `test/run_all_test_cases.py`.
 
-## Основные директории
+## Повторный запуск
 
-- `src/driver.py` - подключение Selenium к OnlyOffice.
-- `src/pages/` - PageObjects и локаторы.
-- `src/utils/` - таймер, логирование, визуальные проверки.
-- `src/interaction_log_executor_simple.py` - упрощенный replay с роутингом по `testId`.
-- `test/` - готовые тесты и примеры.
-- `scripts/` - setup/run/start/install скрипты (`.bat`).
-- `docs/` - документация и заметки для агентов.
+Для повторного прогона:
+
+1. Если OnlyOffice не запущен, сначала выполните:
+
+```bat
+scripts\start_onlyoffice.bat
+```
+
+2. Затем повторяйте:
+
+```bat
+scripts\run_tests.bat .venv
+scripts\replay_cases_report.bat
+```
 
 ## Как делать `test_cases` и куда их класть
 
@@ -44,13 +51,23 @@ scripts\replay_cases_report.bat
 3. Поместите файл в `.\test_cases\sql_export_postgres.jsonl`
 
 ```bat
-.venv\Scripts\python.exe test\run_replay_simple.py --log test_cases\sql_export_postgres.jsonl --debugger-address 127.0.0.1:9222
+.venv\Scripts\python.exe test\run_replay_simple.py --log test_cases\sql_export_postgres.jsonl
 ```
 
 5. Запустите все кейсы пакетом:
 
 ```bat
-scripts\run_tests.bat .venv 9222
+scripts\run_tests.bat .venv
 ```
 
 Артефакты прогона сохраняются в `artifacts\replay_cases\batch-<timestamp>\`.
+
+## Основные директории
+
+- `src/driver.py` - подключение Selenium к OnlyOffice.
+- `src/pages/` - PageObjects и локаторы.
+- `src/utils/` - таймер, логирование, визуальные проверки.
+- `src/interaction_log_executor_simple.py` - упрощенный replay с роутингом по `testId`.
+- `test/` - готовые тесты и примеры.
+- `scripts/` - setup/run/start/install скрипты (`.bat`).
+- `docs/` - документация и заметки для агентов.
