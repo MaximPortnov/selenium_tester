@@ -7,6 +7,9 @@
 4) **Import connections** — manually load `connections_2026-01-22.json` via plugin UI (enables SQL tests).
 5) **Run tests** — `scripts/run_tests.bat .venv 9222` (uses `.venv`, points driver to chromedriver, attaches to debugger port).
 6) **Run log replay (optional)** — `python -m src.interaction_log_executor --log .\interaction-log-*.jsonl`.
+7) **Case folders** — keep replay cases split by plugin:
+   - `test_cases/slider_query/*.jsonl` for `test/slider_query/run_all_test_cases.py`
+   - `test_cases/r7_code/*.jsonl` for future R7 Code replay flows
 
 ## Preconditions checklist
 - Python 3.12+ installed and on PATH.
@@ -16,7 +19,7 @@
 - Test data imported (connections file).
 
 ## When adjusting or extending tests
-- Add locators/methods only in PageObject files under `src/pages/`; keep tests thin.
+- Add locators/methods only in PageObject files under `src/pages_slider_query/` and `src/pages_r7_code/`; keep tests thin.
 - For new SQL Manager flows, prefer reusing helpers in `SqlManagerPage`.
 - For log-driven flows, use `src/interaction_log_executor.py` and keep manual compensations in `add_before_seq_hook` / `add_after_seq_hook`.
 - For metrics, use `Timer` from `src/utils/timer.py` (`start()` → `mark()`/`step()` → `summary()`) inside tests.
@@ -41,3 +44,4 @@
 ## Documentation freshness
 - After changing scripts, flows, or locators, update `docs/AGENT_NOTES.md` (EN), `docs/AGENT_NOTES_RU.md` (RU), and related `docs/agent/*` pages in the same PR to keep guidance accurate.
 - Do not skip the planning step: new feature ideas must start in `features/*.md` before landing in `docs/*`.
+

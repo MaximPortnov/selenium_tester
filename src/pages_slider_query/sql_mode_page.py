@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
 from .sql_manager_page import SqlManagerPage
-from .base_page import BasePage
+from ..pages_common.base_page import BasePage
 
 
 class SqlModePage(BasePage):
@@ -61,3 +61,4 @@ class SqlModePage(BasePage):
         Журнал
         """
         self._js_click_locator(self.LOG_BUTTON)
+

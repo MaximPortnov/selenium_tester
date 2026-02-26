@@ -33,7 +33,7 @@ if /I "%START_OO%"=="start" (
 
 set "DEBUGGER_ADDRESS=127.0.0.1:%PORT%"
 echo Running batch replay with %PYTHON_EXE% ...
-"%PYTHON_EXE%" "%REPO_ROOT%\test\run_all_test_cases.py" --debugger-address "%DEBUGGER_ADDRESS%"
+"%PYTHON_EXE%" "%REPO_ROOT%\test\slider_query\run_all_test_cases.py" --debugger-address "%DEBUGGER_ADDRESS%"
 set "EXIT_CODE=%ERRORLEVEL%"
 if not "%EXIT_CODE%"=="0" (
     echo Batch replay failed with exit code %EXIT_CODE%.
@@ -41,3 +41,4 @@ if not "%EXIT_CODE%"=="0" (
 )
 
 endlocal
+

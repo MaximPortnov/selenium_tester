@@ -8,13 +8,13 @@ Primary audience: LLM/automation agents that need to set up, run, or extend the 
    - `scripts/setup_env.bat` — create `.venv`, install deps.
    - `scripts/install_chromedriver.bat` — fetch matching chromedriver.
    - `scripts/start_onlyoffice.bat` — launch OnlyOffice with `--remote-debugging-port=9222`.
-   - `scripts/run_tests.bat` — run `test/run_all_test_cases.py`.
+   - `scripts/run_tests.bat` — run `test/slider_query/run_all_test_cases.py`.
    - `scripts/replay_cases_report.bat` — pretty-print latest `artifacts/replay_cases` summary.
 3) Import `connections_2026-01-22.json` into the plugin manually before SQL tests.
 
 ## Repo map (agent-relevant)
-- Application code: `src/` (PageObjects `src/pages/*`, utils in `src/utils`, driver in `src/driver.py`).
-- Tests/examples: `test/` (`my_test.py`, `test.ipynb`).
+- Application code: `src/` (Slider Query pages `src/pages_slider_query/*`, shared base `src/pages_common/*`, R7 Code pages `src/pages_r7_code/*`, utils in `src/utils`, driver in `src/driver.py`).
+- Tests/examples: `test/` (`test/slider_query/*`, `test/r7_code/*`).
 - Config/data: `connections_2026-01-22.json`.
 - Scripts: `scripts/` (venv, chromedriver, OnlyOffice, runner; `.bat` only).
 - Agent docs: `docs/AGENT_NOTES.md` (EN), `docs/AGENT_NOTES_RU.md` (RU), `docs/agent/` (deep dives).
@@ -32,5 +32,7 @@ Primary audience: LLM/automation agents that need to set up, run, or extend the 
 - Troubleshooting matrix: `docs/agent/troubleshooting.md`
 
 ## Extending
-- Implement TODOs in `src/pages/sql_manager_page.py` and add timings in `src/utils/timer.py`.
+- Implement TODOs in `src/pages_slider_query/sql_manager_page.py` and add timings in `src/utils/timer.py`.
 - Maintain dual-language docs (EN primary, RU secondary with `_RU` suffix).
+
+

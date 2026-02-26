@@ -8,10 +8,16 @@
 
 ## 2. Структура репозитория
 - `test/driver.py` — подключение к запущенному Chrome/OnlyOffice через `debuggerAddress=127.0.0.1:9222`; ищет chromedriver в `chromedriver-win64/chromedriver.exe` или `CHROMEDRIVER_PATH`.
-- `src/pages/*.py` — Page Object слой: `base_page`, `home_page`, `editor_page`, `plugin_page` (+ `SqlModePage`), `sql_manager_page`.
-- `test/my_test.py`, `test/test.ipynb` — пример e2e.
-- `test/run_replay_simple.py` — лаунчер replay с проектным профилем роутов для `src.interaction_log_executor_simple`.
-- `test/run_all_test_cases.py` — пакетный прогон всех `test_cases/*.jsonl` с раздельными логами по кейсам.
+- `src/pages_slider_query/*.py` — Page Object слой для Slider Query (`home_page`, `editor_page`, `plugin_page`, `olap_mode_page`, `sql_mode_page`, `sql_manager_page`).
+- `src/pages_r7_code/*.py` — Page Object слой для R7 Code.
+  - `src/pages_r7_code/r7_code_page.py` содержит проверенные кликабельные локаторы кнопок (activity bar, toolbar, settings, dialogs).
+- `src/pages_common/base_page.py` — общий `BasePage` для обоих плагинов.
+- `test/slider_query/*` — replay-профиль и раннеры для Slider Query.
+- `test/r7_code/*` — пакет тестов для сценариев R7 Code.
+- `test_cases/slider_query/*` — JSONL replay-кейсы для пакетного прогона Slider Query.
+- `test_cases/r7_code/*` — резерв под JSONL replay-кейсы для R7 Code.
+- `test/slider_query/run_replay_simple.py` — лаунчер replay с проектным профилем роутов для `src.interaction_log_executor_simple`.
+- `test/slider_query/run_all_test_cases.py` — пакетный прогон всех `test_cases/slider_query/*.jsonl` с раздельными логами по кейсам.
 - `utils/replay_cases_report.py` + `scripts/replay_cases_report.bat` — красивый отчет по последнему batch в `artifacts/replay_cases`.
 - `src/utils/timer.py` — таймер (`Timer.start()`, `mark()`, `step()`, `summary()`).
 - `src/utils/logging_utils.py` — настройка логов (консоль + файл `artifacts/logs/run-<ts>.log`, env `LOG_LEVEL`/`LOG_DIR`).
@@ -68,9 +74,9 @@ python -m src.interaction_log_executor --log .\interaction-log-1770560528478.jso
 - `--dry-parse` (только парсинг, без Selenium)
 - `--no-prepare` (пропустить стандартные pre-step: открытие ячейки и панели плагина)
 
-Запуск всех replay-кейсов из `test_cases/` с логами в `artifacts/replay_cases/...`:
+Запуск всех replay-кейсов из `test_cases/slider_query/` с логами в `artifacts/replay_cases/...`:
 ```powershell
-python .\test\run_all_test_cases.py
+python .\test\slider_query\run_all_test_cases.py
 ```
 
 ## 7. Правила для агента
@@ -92,3 +98,6 @@ python .\test\run_all_test_cases.py
 - `SessionNotCreatedException`: почти всегда несовместимая версия chromedriver — переустановите через `install_chromedriver.bat`.
 - Не находятся элементы: убедитесь, что активна нужная вкладка/iframe; используйте `find_element_in_frames`.
 - Порт 9222 занят: завершите процесс или запустите на другом порту и передайте `debugger_address` в `DriverOnlyOffice`.
+
+
+

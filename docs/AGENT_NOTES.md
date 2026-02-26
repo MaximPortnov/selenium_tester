@@ -8,10 +8,16 @@
 
 ## 2. Repository map
 - `test/driver.py` — attaches to running Chrome/OnlyOffice via `debuggerAddress=127.0.0.1:9222`; finds chromedriver in `chromedriver-win64/chromedriver.exe` or `CHROMEDRIVER_PATH`.
-- `src/pages/*.py` — Page Objects: `base_page`, `home_page`, `editor_page`, `plugin_page` (+ `SqlModePage`), `sql_manager_page`.
-- `test/my_test.py`, `test/test.ipynb` — sample e2e flow.
-- `test/run_replay_simple.py` — replay launcher with project routes profile for `src.interaction_log_executor_simple`.
-- `test/run_all_test_cases.py` — batch runner for all `test_cases/*.jsonl` with isolated logs per case.
+- `src/pages_slider_query/*.py` — Page Objects for Slider Query (`home_page`, `editor_page`, `plugin_page`, `olap_mode_page`, `sql_mode_page`, `sql_manager_page`).
+- `src/pages_r7_code/*.py` — Page Objects for R7 Code.
+  - `src/pages_r7_code/r7_code_page.py` includes verified clickable button locators (activity bars, toolbar, settings, dialogs).
+- `src/pages_common/base_page.py` — shared `BasePage` for both plugins.
+- `test/slider_query/*` — Slider Query replay profile and runners.
+- `test/r7_code/*` — R7 Code test package (new scenarios go here).
+- `test_cases/slider_query/*` — JSONL replay cases for Slider Query batch runner.
+- `test_cases/r7_code/*` — reserved JSONL replay cases for R7 Code.
+- `test/slider_query/run_replay_simple.py` — replay launcher with project routes profile for `src.interaction_log_executor_simple`.
+- `test/slider_query/run_all_test_cases.py` — batch runner for all `test_cases/slider_query/*.jsonl` with isolated logs per case.
 - `utils/replay_cases_report.py` + `scripts/replay_cases_report.bat` — pretty report for latest `artifacts/replay_cases` batch summary.
 - `src/utils/timer.py` — timing helper (`Timer.start()`, `mark()`, `step()`, `summary()`).
 - `src/utils/logging_utils.py` — logger setup (console + file `artifacts/logs/run-<ts>.log`, env `LOG_LEVEL`/`LOG_DIR`).
@@ -53,7 +59,7 @@ Example:
 scripts\setup_env.bat
 scripts\install_chromedriver.bat           # first time or version change
 scripts\start_onlyoffice.bat 9222          # keep it running
-scripts\run_tests.bat .venv 9222           # runs test/run_all_test_cases.py via .venv
+scripts\run_tests.bat .venv 9222           # runs test/slider_query/run_all_test_cases.py via .venv
 ```
 If OnlyOffice is already running on the port, skip step 3.
 
@@ -68,9 +74,9 @@ Useful flags:
 - `--dry-parse` (parse only, no Selenium)
 - `--no-prepare` (skip default pre-steps: open cell + plugin panel)
 
-Run all replay cases from `test_cases/` and collect logs in `artifacts/replay_cases/...`:
+Run all replay cases from `test_cases/slider_query/` and collect logs in `artifacts/replay_cases/...`:
 ```powershell
-python .\test\run_all_test_cases.py
+python .\test\slider_query\run_all_test_cases.py
 ```
 
 ## 7. Guardrails for LLM
@@ -92,3 +98,6 @@ python .\test\run_all_test_cases.py
 - `SessionNotCreatedException`: usually chromedriver version mismatch — reinstall via `install_chromedriver.bat`.
 - Elements not found: check correct tab/iframe; use `find_element_in_frames` from `driver.py`.
 - Port 9222 busy: kill conflicting process or run OnlyOffice on another port and pass `debugger_address` to `DriverOnlyOffice`.
+
+
+

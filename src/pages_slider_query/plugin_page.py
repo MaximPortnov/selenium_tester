@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
-from .base_page import BasePage
+from ..pages_common.base_page import BasePage
 from .sql_manager_page import SqlManagerPage
 
 
@@ -59,6 +59,7 @@ class PluginPage(BasePage):
         Аналитические базы данных (OLAP, Внешние сводные таблицы)
         """
         self._js_click_locator(self.MAIN_OLAP_MODE_BUTTON)
+        time.sleep(0.1)
 
     def click_main_file_mode(self) -> None:
         """
@@ -66,6 +67,7 @@ class PluginPage(BasePage):
         Неструктурированные (PDF, Word)
         """
         self._js_click_locator(self.MAIN_FILE_MODE_BUTTON)
+        time.sleep(0.1)
 
     def click_main_smartdocs(self) -> None:
         """
@@ -73,6 +75,7 @@ class PluginPage(BasePage):
         Документация
         """
         self._js_click_locator(self.MAIN_SMARTDOCS_BUTTON)
+        time.sleep(0.1)
 
     def click_main_connection_manager(self) -> None:
         """
@@ -80,6 +83,7 @@ class PluginPage(BasePage):
         Менеджер соединений
         """
         self._js_click_locator(self.MAIN_CONNECTION_MANAGER_BUTTON)
+        time.sleep(0.1)
 
     def click_main_settings(self) -> None:
         """
@@ -87,6 +91,7 @@ class PluginPage(BasePage):
         Настройки
         """
         self._js_click_locator(self.MAIN_SETTINGS_BUTTON)
+        time.sleep(0.1)
 
     def click_main_about(self) -> None:
         """
@@ -94,10 +99,12 @@ class PluginPage(BasePage):
         О программе
         """
         self._js_click_locator(self.MAIN_ABOUT_BUTTON)
+        time.sleep(0.1)
 
     def click_close_plugin(self) -> None:
         """
         Нажимает на кнопку закрытия плагина.
         """
         self._js_click_locator(self.CLOSE_PLUGIN_BUTTON)
+        time.sleep(0.1)
 

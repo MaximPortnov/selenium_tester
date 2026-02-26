@@ -8,7 +8,7 @@ from pathlib import Path
 from time import perf_counter
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -30,14 +30,14 @@ def _find_logs(log_dir: Path) -> list[Path]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Run all interaction-log *.jsonl files from test_cases one-by-one "
-            "using test/run_replay_simple.py and collect logs under artifacts."
+            "Run all interaction-log *.jsonl files from test_cases/slider_query one-by-one "
+            "using test/slider_query/run_replay_simple.py and collect logs under artifacts."
         )
     )
     parser.add_argument(
         "--cases-dir",
         type=Path,
-        default=Path("test_cases"),
+        default=Path("test_cases/slider_query"),
         help="Directory with *.jsonl replay cases.",
     )
     parser.add_argument(
@@ -90,7 +90,7 @@ def main(argv: list[str] | None = None) -> int:
 
         cmd = [
             sys.executable,
-            "test/run_replay_simple.py",
+            "test/slider_query/run_replay_simple.py",
             "--log",
             str(case_path),
             "--debugger-address",
@@ -171,3 +171,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

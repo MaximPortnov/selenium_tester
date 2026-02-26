@@ -1,6 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from .base_page import BasePage
+from ..pages_common.base_page import BasePage
 
 
 class HomePage(BasePage):
@@ -31,3 +31,4 @@ class HomePage(BasePage):
             new_handle_available
         )
         self.driver.set_window_handle(new_handle)
+

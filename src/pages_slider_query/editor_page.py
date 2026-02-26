@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from .base_page import BasePage
+from ..pages_common.base_page import BasePage
 
 
 class EditorPage(BasePage):
@@ -50,3 +50,4 @@ class EditorPage(BasePage):
         if el:
             self._js_click(el)
         # self._try_click_locator(self.CLOSE_BUTTON, timeout=1)
+

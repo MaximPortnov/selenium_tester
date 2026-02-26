@@ -7,7 +7,7 @@ from typing import Any, Callable
 
 from selenium.common.exceptions import NoSuchElementException
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -15,11 +15,12 @@ from src.interaction_log_executor_simple import (  # noqa: E402
     InteractionStep,
     SimpleInteractionLogExecutor,
 )
-from src.pages.editor_page import EditorPage  # noqa: E402
-from src.pages.home_page import HomePage  # noqa: E402
-from src.pages.plugin_page import PluginPage  # noqa: E402
-from src.pages.sql_manager_page import SqlManagerPage  # noqa: E402
-from src.pages.sql_mode_page import SqlModePage  # noqa: E402
+from src.pages_slider_query.editor_page import EditorPage  # noqa: E402
+from src.pages_slider_query.home_page import HomePage  # noqa: E402
+from src.pages_slider_query.olap_mode_page import OlapModePage  # noqa: E402
+from src.pages_slider_query.plugin_page import PluginPage  # noqa: E402
+from src.pages_slider_query.sql_manager_page import SqlManagerPage  # noqa: E402
+from src.pages_slider_query.sql_mode_page import SqlModePage  # noqa: E402
 
 
 def _page(executor: SimpleInteractionLogExecutor, key: str):
@@ -192,6 +193,7 @@ def _build_pages(executor: SimpleInteractionLogExecutor) -> dict[str, Any]:
         "home_page": HomePage(executor.driver),
         "editor_page": EditorPage(executor.driver),
         "plugin_page": PluginPage(executor.driver),
+        "olap_mode_page": OlapModePage(executor.driver),
         "sql_mode_page": SqlModePage(executor.driver),
         "sql_manager_page": SqlManagerPage(executor.driver),
         "preview_timeout": 60,
@@ -248,12 +250,18 @@ def build_click_routes(
     dict[str, Callable[[InteractionStep], None]],
 ]:
     plugin_page = _page(executor, "plugin_page")
+    olap_mode_page = _page(executor, "olap_mode_page")
     sql_mode_page = _page(executor, "sql_mode_page")
     sql_manager_page = _page(executor, "sql_manager_page")
 
     exact: dict[str, Callable[[InteractionStep], None]] = {
         "main-sql-mode": lambda _step: plugin_page.click_main_sql_mode(),
         "main-olap-mode": lambda _step: plugin_page.click_main_olap_mode(),
+        "olap-home-open-pivot-reports": lambda _step: olap_mode_page.click_open_pivot_reports(),
+        "olap-pivot-connection-select": lambda step: _click_generic(executor, step),
+        "olap-pivot-cube-select": lambda step: _click_generic(executor, step),
+        "olap-pivot-toolbar-create": lambda _step: olap_mode_page.click_toolbar_create(),
+        "olap-pivot-header": lambda _step: olap_mode_page.click_header(),
         "main-file-mode": lambda _step: plugin_page.click_main_file_mode(),
         "main-smartdocs": lambda _step: plugin_page.click_main_smartdocs(),
         "main-connection-manager": lambda _step: plugin_page.click_main_connection_manager(),
@@ -282,6 +290,16 @@ def build_click_routes(
     }
 
     prefix: dict[str, Callable[[InteractionStep], None]] = {
+        "custom-select-item-olap_pivot_connection_select-": lambda step: (
+            olap_mode_page.select_connection(str(getattr(step, "text", None) or "").strip())
+            if str(getattr(step, "text", None) or "").strip()
+            else _click_generic(executor, step)
+        ),
+        "custom-select-item-olap_pivot_cube_select-": lambda step: (
+            olap_mode_page.select_cube(str(getattr(step, "text", None) or "").strip())
+            if str(getattr(step, "text", None) or "").strip()
+            else _click_generic(executor, step)
+        ),
         "cm-tree-connection-": lambda step: (
             sql_manager_page.select_connection(
                 str(getattr(step, "connectionName", None) or "").strip()
@@ -314,6 +332,16 @@ def build_click_routes(
 
 def build_skip_rules() -> list[dict[str, Any]]:
     return [
+        {
+            "event": "change",
+            "action": "set-value",
+            "testId": "olap-pivot-connection-select",
+        },
+        {
+            "event": "change",
+            "action": "set-value",
+            "testId": "olap-pivot-cube-select",
+        },
         {
             "event": "input",
             "action": "set-value",
@@ -352,7 +380,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--log",
         type=Path,
-        default=Path("interaction-log-1771241377641.jsonl"),
+        default=Path("test_cases/slider_query/interaction-log-1771241377641.jsonl"),
         help="Path to interaction log JSONL.",
     )
     parser.add_argument(
@@ -384,7 +412,7 @@ def main(argv: list[str] | None = None) -> int:
         cmd.append("--no-prepare")
 
     env = os.environ.copy()
-    env["OO_SIMPLE_ROUTES_MODULE"] = "test.run_replay_simple"
+    env["OO_SIMPLE_ROUTES_MODULE"] = "test.slider_query.run_replay_simple"
 
     print("[replay-profile] run:", " ".join(cmd))
     return subprocess.call(cmd, cwd=str(ROOT), env=env)
@@ -392,3 +420,5 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+

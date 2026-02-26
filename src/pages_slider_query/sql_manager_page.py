@@ -5,7 +5,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.action_chains import ActionChains
 from typing import Optional
-from .base_page import BasePage
+from ..pages_common.base_page import BasePage
 
 
 class SqlManagerPage(BasePage):
@@ -426,3 +426,4 @@ class SqlManagerPage(BasePage):
                 continue
         # fallback: search in descendants globally
         return self.driver.find_element_in_frames(By.CSS_SELECTOR, candidates[-1])
+

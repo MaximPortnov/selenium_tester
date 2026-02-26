@@ -23,7 +23,7 @@ scripts\run_tests.bat .venv
 scripts\replay_cases_report.bat
 ```
 
-`run_tests` по умолчанию запускает `test/run_all_test_cases.py`.
+`run_tests` по умолчанию запускает `test/slider_query/run_all_test_cases.py`.
 
 ## Повторный запуск
 
@@ -44,17 +44,21 @@ scripts\replay_cases_report.bat
 
 ## Как делать `test_cases` и куда их класть
 
-`test/run_all_test_cases.py` берёт только файлы `*.jsonl` из корневой папки `test_cases\` (не рекурсивно).
+Структура каталога:
+- `test_cases\slider_query\` — replay-кейсы для Slider Query.
+- `test_cases\r7_code\` — replay-кейсы для R7 Code.
+
+`test/slider_query/run_all_test_cases.py` берёт только файлы `*.jsonl` из `test_cases\slider_query\` (не рекурсивно).
 
 1. Подготовьте replay-лог в формате JSONL (`interaction-log-*.jsonl`):
 2. Назовите файл понятным именем, например `sql_export_postgres.jsonl`.
-3. Поместите файл в `.\test_cases\sql_export_postgres.jsonl`
+3. Поместите файл в `.\test_cases\slider_query\sql_export_postgres.jsonl`
 
 ```bat
-.venv\Scripts\python.exe test\run_replay_simple.py --log test_cases\sql_export_postgres.jsonl
+.venv\Scripts\python.exe test\slider_query\run_replay_simple.py --log test_cases\slider_query\sql_export_postgres.jsonl
 ```
 
-5. Запустите все кейсы пакетом:
+4. Запустите все кейсы пакетом:
 
 ```bat
 scripts\run_tests.bat .venv
@@ -65,9 +69,14 @@ scripts\run_tests.bat .venv
 ## Основные директории
 
 - `src/driver.py` - подключение Selenium к OnlyOffice.
-- `src/pages/` - PageObjects и локаторы.
+- `src/pages_slider_query/` - PageObjects и локаторы плагина Slider Query.
+- `src/pages_r7_code/` - PageObjects плагина R7 Code.
+- `src/pages_common/` - общий BasePage и общие элементы page-слоя.
 - `src/utils/` - таймер, логирование, визуальные проверки.
 - `src/interaction_log_executor_simple.py` - упрощенный replay с роутингом по `testId`.
-- `test/` - готовые тесты и примеры.
+- `test/slider_query/` - replay-профиль и batch runner для Slider Query.
+- `test/r7_code/` - тестовый пакет для сценариев R7 Code.
 - `scripts/` - setup/run/start/install скрипты (`.bat`).
 - `docs/` - документация и заметки для агентов.
+
+
