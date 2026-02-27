@@ -124,6 +124,8 @@ def main() -> None:
 
         prepare_plugin_home(driver)
         click_in_any_frame(driver, By.XPATH, MAIN_SQL_MODE_XPATH)
+        time.sleep(0.1)
+        click_in_any_frame(driver, By.XPATH, "//button[@data-testid='sql-home-open-sql-manager']")
         print("SQL mode opened and add-query dialog opened")
     finally:
         driver.quit()
